@@ -1,0 +1,5 @@
+solve_problem
+.vscode
+*.mod
+*.smod
+*.o
