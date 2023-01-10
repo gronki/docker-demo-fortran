@@ -153,3 +153,46 @@ WORKDIR /work
 # when the container is run. this is of course our program
 ENTRYPOINT ["/usr/local/bin/solve_problem"]
 ```
+
+## Bulding and running the container
+
+Building the image takes just a minute (in our simple case) and one command. Place the ``Dockerfile`` and the source file in one directory (or just download this repository) and run:
+
+```bash
+docker build -t equation_solver .
+```
+
+If the build succeeds, now we can execute our application by running:
+
+```bash
+docker run -it equation_solver input.txt
+```
+
+But wait, something failed! We get an error:
+
+```
+At line 33 of file solve_problem.f90 (unit = 11)
+Fortran runtime error: Cannot open file 'input.txt': No such file or directory
+```
+
+Indeed, Docker isolates the application filesystem from the host filesystem, therefore our program is unable to see the input file. However, we can easily fix that by using Docker volumes. We will mount the host system directory where the ``input.txt`` file is located (it is stored in the environment variable ``$DATA_DIR`` in our example) to ``/work`` directory inside the container, which is the working directory of our application (see the Dockerfile!).
+
+```bash
+docker run -it -v "$DATA_DIR":/work equation_solver input.txt
+```
+
+Just as before, we should get a correct result, except we can build and run our application the same way on any other system that supports Docker.
+
+```
+   1.00000000       2.00000000    
+```
+
+## Building the image straight from the git repository
+
+There is a very nice feature of Docker and Git: you are able to distribute your application, and make it as easy to run it as two commands! Try the following:
+
+```bash
+docker build -t equation_solver 
+docker run -it -v "$DATA_DIR":/work equation_solver input.txt
+```
+```
