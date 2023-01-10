@@ -162,6 +162,8 @@ Building the image takes just a minute (in our simple case) and one command. Pla
 docker build -t equation_solver .
 ```
 
+(**Note**. You might need to add ``sudo`` in front of the ``docker`` command, unless you configure your system otherwise.)
+
 If the build succeeds, now we can execute our application by running:
 
 ```bash
@@ -192,7 +194,7 @@ Just as before, we should get a correct result, except we can build and run our 
 There is a very nice feature of Docker and Git: you are able to distribute your application, and make it as easy to run it as two commands! Try the following:
 
 ```bash
-docker build -t equation_solver 
-docker run -it -v "$DATA_DIR":/work equation_solver input.txt
+docker build -t equation_solver https://github.com/gronki/docker-demo-fortran.git
 ```
-```
+
+Using this one simple command, you should be able to build the image of our example application! How easy is that?
