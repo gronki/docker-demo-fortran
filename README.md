@@ -177,10 +177,10 @@ At line 33 of file solve_problem.f90 (unit = 11)
 Fortran runtime error: Cannot open file 'input.txt': No such file or directory
 ```
 
-Indeed, Docker isolates the application filesystem from the host filesystem, therefore our program is unable to see the input file. However, we can easily fix that by using Docker volumes. We will mount the host system directory where the ``input.txt`` file is located (it is stored in the environment variable ``$DATA_DIR`` in our example) to ``/work`` directory inside the container, which is the working directory of our application (see the Dockerfile!).
+Indeed, Docker isolates the application filesystem from the host filesystem, therefore our program is unable to see the input file. However, we can easily fix that by using Docker volumes. We will mount the host system directory where the ``input.txt`` file is located (it being ``/absolute/path/to/data`` in our example -- and yes, it needs to be an absolute path!) to ``/work`` directory inside the container, which is the working directory of our application (see the Dockerfile).
 
 ```bash
-docker run -it -v "$DATA_DIR":/work equation_solver input.txt
+docker run -it -v /absolute/path/to/data:/work equation_solver input.txt
 ```
 
 Just as before, we should get a correct result, except we can build and run our application the same way on any other system that supports Docker.
